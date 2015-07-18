@@ -9,6 +9,11 @@
             "email":"ivan.chepurnyi@ecomdev.org",
             "homepage": "http://www.ecomdev.org",
             "role":"Developer"
+        },
+	{
+            "name": "Rafael Ortega Bueno",
+            "email":"rorteg@gmail.com",
+            "role":"Developer"
         }
     ],
     "bin": [
