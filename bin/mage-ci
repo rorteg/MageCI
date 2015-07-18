@@ -51,7 +51,8 @@ script_dir=$(dirname $script_bin)
 action=$1
 shift;
 
-MAGECI_TMP=$(dirname $script_dir)/.tmp
+#MAGECI_TMP=$(dirname $script_dir)/.tmp
+MAGECI_TMP=/tmp/magento
 
 if [ -e $HOME/.mageci.conf ]
 then
@@ -338,7 +339,7 @@ install_magento ()
    local magento_dir=$1; local version=$2; local db_name=$3; shift 3
    local db_create; local db_user="root"; local db_pass=""; local sql_dump_file=""; local include_test_db
    local phpunit_local_xml; local opt; local sql_base_url; local db_cred
-   local base_url="http://magento.local/"; local download_dir=$MAGECI_TMP;
+   local base_url="http://127.0.0.1:8085/"; local download_dir=$MAGECI_TMP;
    local admin_password="123123test"; local clean_up=0; local no_download="0";
 
    while getopts :u:r:p:f:b:d:a:cton opt
@@ -462,9 +463,12 @@ install_magento ()
        config_file_tmp="${config_file}.tmp"
        cp $config_file $config_file_tmp
        sed 's/<pdo_mysql\/>/<pdo_mysql>1<\/pdo_mysql>/' $config_file_tmp > $config_file
-       if [[ $version == "1.7.0.2" ]]
+       
+       # Special case for smaller versions Magento 1.7.0.2 with the installation process when the InnoDB is not supported. Applied version of lines of code 1.9.x
+       version_string_to_compare=$(echo $version | sed -r 's/[.]//g') 
+       if [[ $version_string_to_compare -lt "1702" ]]  
        then
-		# Special case for Magento 1.7.0.2 with the installation process when the InnoDB is not supported. Applied version of lines of code 1.9.x
+		
        		echo "${MAGECIF[2]}Applying innoDB fix...${MAGECIF[0]}"
 		db_file="${magento_dir}/app/code/core/Mage/Install/Model/Installer/Db/Mysql4.php"
 		db_file_tmp="${db_file}.tmp"
