@@ -462,6 +462,23 @@ install_magento ()
        config_file_tmp="${config_file}.tmp"
        cp $config_file $config_file_tmp
        sed 's/<pdo_mysql\/>/<pdo_mysql>1<\/pdo_mysql>/' $config_file_tmp > $config_file
+       if [[ $version == "1.7.0.2" ]]
+       then
+		# Special case for Magento 1.7.0.2 with the installation process when the InnoDB is not supported. Applied version of lines of code 1.9.x
+       		echo "${MAGECIF[2]}Applying innoDB fix...${MAGECIF[0]}"
+		db_file="${magento_dir}/app/code/core/Mage/Install/Model/Installer/Db/Mysql4.php"
+		db_file_tmp="${db_file}.tmp"
+		db_file_tmp2="${db_file}.tmp2"
+		db_file_tmp3="${db_file}.tmp3"
+		cp $db_file $db_file_tmp
+		sed '63d' $db_file > $db_file_tmp2
+		fix_mage="return isset(\$variables['InnoDB']) && (\$variables['InnoDB'] == 'DEFAULT' || \$variables['InnoDB'] == 'YES');"
+		sed 's/SHOW VARIABLES/SHOW ENGINES/' $db_file_tmp2 > $db_file_tmp3
+		sed "63i ${fix_mage}" $db_file_tmp3 > $db_file
+		rm $db_file_tmp2
+		rm $db_file_tmp3	
+		
+       fi 
    fi
 
    echo "${MAGECIF[2]}Installing Magento...${MAGECIF[0]}"
