@@ -52,7 +52,7 @@ action=$1
 shift;
 
 #MAGECI_TMP=$(dirname $script_dir)/.tmp
-MAGECI_TMP=/tmp/magento
+MAGECI_TMP=/var/tmp/magento
 
 if [ -e $HOME/.mageci.conf ]
 then
