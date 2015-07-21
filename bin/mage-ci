@@ -54,7 +54,7 @@ shift;
 #MAGECI_TMP=$(dirname $script_dir)/.tmp
 MAGECI_TMP=/var/tmp/magento_downloads
 
-mkdir MAGECI_TMP
+mkdir $MAGECI_TMP
 
 if [ -e $HOME/.mageci.conf ]
 then
