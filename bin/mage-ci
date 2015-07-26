@@ -54,7 +54,7 @@ shift;
 #MAGECI_TMP=$(dirname $script_dir)/.tmp
 MAGECI_TMP=/var/tmp/magento_downloads
 
-mkdir $MAGECI_TMP
+#mkdir $MAGECI_TMP
 
 if [ -e $HOME/.mageci.conf ]
 then
@@ -468,8 +468,8 @@ install_magento ()
        
        # Special case for smaller versions Magento 1.7.0.2 with the installation process when the InnoDB is not supported. Applied version of lines of code 1.9.x
        version_string_to_compare=$(echo $version | sed -r 's/[.]//g') 
-       if [[ $version_string_to_compare -lt "1702" ]]  
-       then
+       #if [[ $version_string_to_compare -lt "1702" ]]  
+       #then
 		
        		echo "${MAGECIF[2]}Applying innoDB fix...${MAGECIF[0]}"
 		db_file="${magento_dir}/app/code/core/Mage/Install/Model/Installer/Db/Mysql4.php"
@@ -484,7 +484,7 @@ install_magento ()
 		rm $db_file_tmp2
 		rm $db_file_tmp3	
 		
-       fi 
+       #fi 
    fi
 
    echo "${MAGECIF[2]}Installing Magento...${MAGECIF[0]}"
